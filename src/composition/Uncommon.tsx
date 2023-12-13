@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 interface UncommonProps {
   initialCount: Record<string, number>;
 }
+//TODO - 후쿠로, 브루노 등 단일 흔함 유닛 2개의 조합에 대한 오류 해결
 const Uncommon: React.FC<UncommonProps> = ({ initialCount }) => {
   const composition: { [key: string]: { [key: string]: number } } = {
     후쿠로: { 칼병: 2 },
@@ -51,7 +52,7 @@ const Uncommon: React.FC<UncommonProps> = ({ initialCount }) => {
     };
 
     calculateCompletion();
-  }, [initialCount, completion]); // Include 'initialCount' and 'completion' in the dependency array
+  }, [initialCount]); // Include 'initialCount' and 'completion' in the dependency array
 
   // 키보드 이벤트 핸들러 등을 추가
 

@@ -1,9 +1,6 @@
 /* eslint-disable */
 import React, { useState, useEffect } from 'react';
 import Uncommon from './composition/Uncommon';
-interface KeyboardCounterProps {
-  children: React.ReactNode;
-}
 
 interface CharacterKeys {
   q: string;
