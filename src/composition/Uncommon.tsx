@@ -5,7 +5,7 @@ interface UncommonProps {
   initialCount: Record<string, number>;
 }
 const Uncommon: React.FC<UncommonProps> = ({ initialCount }) => {
-  const composition = {
+  const composition: { [key: string]: { [key: string]: number } } = {
     후쿠로: { 칼병: 2 },
     블루노: { 총병: 2 },
     니코로빈: { 나미: 1, 상디: 1 },
