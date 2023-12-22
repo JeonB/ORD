@@ -33,19 +33,37 @@ const Uncommon: React.FC<UncommonProps> = ({ initialCount }) => {
 
       Object.keys(composition).forEach((unit) => {
         const unitConditions = composition[unit];
-        const totalConditions = Object.keys(unitConditions).length;
+        var totalConditions = Object.values(unitConditions);
         const satisfiedConditions = Object.keys(unitConditions).filter(
           (condition) =>
             (initialCount[condition] || 0) >= unitConditions[condition],
-        );
+        ).values;
+        if (Array.isArray(totalConditions)) {
+          // totalConditions 배열의 값의 합을 계산
+          const sumOfValues = totalConditions.reduce(
+            (accumulator, currentValue) => accumulator + currentValue,
+            0,
+          );
 
-        // Calculate completion percentage only if all conditions are satisfied
-        if (satisfiedConditions.length === totalConditions) {
-          newCompletion[unit] = 100;
+          // 값의 합이 0보다 큰 경우에만 totalConditions 배열에 추가
+          if (sumOfValues > 0) {
+            newCompletion[unit] = (1 / sumOfValues) * 100;
+          }
+
+          console.log(totalConditions);
         } else {
-          newCompletion[unit] =
-            (satisfiedConditions.length / totalConditions) * 100;
+          const satisfiedConditions = Object.keys(unitConditions).filter(
+            (condition) =>
+              (initialCount[condition] || 0) >= unitConditions[condition],
+          ).values;
         }
+        // Calculate completion percentage only if all conditions are satisfied
+        // if (satisfiedConditions === totalConditions) {
+        //   newCompletion[unit] = 100;
+        // } else {
+        //   newCompletion[unit] =
+        //     (satisfiedConditions.length / totalConditions) * 100;
+        // }
       });
 
       setCompletion(newCompletion);
