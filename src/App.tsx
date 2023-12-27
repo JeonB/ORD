@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import Uncommon from './composition/Uncommon';
 import Common from 'composition/Common';
+import { UnitCountContextProvider, useCount } from 'context/UnitCountContext';
 
 interface CharacterKeys {
   q: string;
@@ -109,25 +110,12 @@ const KeyboardCounter: React.FC = () => {
 };
 //TODO: context로 유닛수 관리하기
 const App: React.FC = () => {
-  const initialCount = {
-    루피: 0,
-    조로: 0,
-    나미: 0,
-    우솝: 0,
-    상디: 0,
-    쵸파: 0,
-    버기: 0,
-    총병: 0,
-    칼병: 0,
-  };
+  const { count } = useCount();
   return (
     <div className="App">
-      <header className="App-header">
-        <Common initialCount={initialCount}>
-          <Uncommon initialCount={initialCount} />
-        </Common>
-        {/* <KeyboardCounter /> */}
-      </header>
+      <UnitCountContextProvider>
+        <Uncommon initialCount={count} />
+      </UnitCountContextProvider>
     </div>
   );
 };
