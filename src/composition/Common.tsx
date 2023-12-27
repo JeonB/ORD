@@ -1,8 +1,9 @@
-/* eslint-disable */
-import React, { useState, useEffect } from 'react';
-import Uncommon from './composition/Uncommon';
-import Common from 'composition/Common';
+import React, { ReactNode, useEffect, useState } from 'react';
 
+interface CommonProps {
+  children: ReactNode;
+  initialCount: Record<string, number>;
+}
 interface CharacterKeys {
   q: string;
   w: string;
@@ -16,7 +17,7 @@ interface CharacterKeys {
   [key: string]: string; // 인덱스 시그니처 추가
 }
 
-const KeyboardCounter: React.FC = () => {
+const Common: React.FC<CommonProps> = ({ children, initialCount }) => {
   const characterKeys: CharacterKeys = {
     q: '루피',
     w: '조로',
@@ -30,17 +31,17 @@ const KeyboardCounter: React.FC = () => {
   };
 
   // 흔함 유닛 수
-  const initialCount = {
-    루피: 0,
-    조로: 0,
-    나미: 0,
-    우솝: 0,
-    상디: 0,
-    쵸파: 0,
-    버기: 0,
-    총병: 0,
-    칼병: 0,
-  };
+  //   const initialCount = {
+  //     루피: 0,
+  //     조로: 0,
+  //     나미: 0,
+  //     우솝: 0,
+  //     상디: 0,
+  //     쵸파: 0,
+  //     버기: 0,
+  //     총병: 0,
+  //     칼병: 0,
+  //   };
 
   const [count, setCount] = useState(initialCount);
 
@@ -87,8 +88,7 @@ const KeyboardCounter: React.FC = () => {
     }));
   };
   return (
-    <div>
-      <p>원랜디 조합식 - 키를 눌러 흔함의 개수 증가</p>
+    <>
       {Object.entries(characterKeys).map(([key, character]) => (
         <div key={key}>
           <p>
@@ -102,34 +102,10 @@ const KeyboardCounter: React.FC = () => {
           </p>
         </div>
       ))}
-      <Uncommon initialCount={count} />
+      {children}
       <button onClick={handleReset}>모두 초기화</button>
-    </div>
-  );
-};
-//TODO: context로 유닛수 관리하기
-const App: React.FC = () => {
-  const initialCount = {
-    루피: 0,
-    조로: 0,
-    나미: 0,
-    우솝: 0,
-    상디: 0,
-    쵸파: 0,
-    버기: 0,
-    총병: 0,
-    칼병: 0,
-  };
-  return (
-    <div className="App">
-      <header className="App-header">
-        <Common initialCount={initialCount}>
-          <Uncommon initialCount={initialCount} />
-        </Common>
-        {/* <KeyboardCounter /> */}
-      </header>
-    </div>
+    </>
   );
 };
 
-export default App;
+export default Common;

@@ -4,7 +4,6 @@ import React, { useState, useEffect } from 'react';
 interface UncommonProps {
   initialCount: Record<string, number>;
 }
-//TODO - 후쿠로, 브루노 등 단일 흔함 유닛 2개의 조합에 대한 오류 해결
 const Uncommon: React.FC<UncommonProps> = ({ initialCount }) => {
   const composition: { [key: string]: { [key: string]: number } } = {
     후쿠로: { 칼병: 2 },
@@ -23,40 +22,26 @@ const Uncommon: React.FC<UncommonProps> = ({ initialCount }) => {
   };
 
   const [completion, setCompletion] = useState<{ [key: string]: number }>(
-    Object.fromEntries(Object.keys(composition).map((unit) => [unit, 0])),
+    Object.fromEntries(Object.keys(composition).map(unit => [unit, 0])),
   );
 
   useEffect(() => {
-    // 각 유닛의 개수가 증가할 때마다 완성도를 계산
     const calculateCompletion = () => {
-      const newCompletion = { ...completion };
+      const newCompletion = { ...completion }; // 갱신된 유닛 수
+      Object.keys(composition).forEach(unit => {
+        const unitConditions = composition[unit]; // 안흔함 유닛의 조합식
+        const totalConditions = Object.values(unitConditions).reduce(function (
+          accumulator,
+          currentValue,
+        ) {
+          return accumulator + currentValue;
+        }, 0); // 안흔함 조합에 필요한 유닛의 수
 
-      Object.keys(composition).forEach((unit) => {
-        const unitConditions = composition[unit];
-        var totalConditions = Object.values(unitConditions);
-        const satisfiedConditions = Object.keys(unitConditions).filter(
-          (condition) =>
-            (initialCount[condition] || 0) >= unitConditions[condition],
-        ).values;
-        if (Array.isArray(totalConditions)) {
-          // totalConditions 배열의 값의 합을 계산
-          const sumOfValues = totalConditions.reduce(
-            (accumulator, currentValue) => accumulator + currentValue,
-            0,
-          );
-
-          // 값의 합이 0보다 큰 경우에만 totalConditions 배열에 추가
-          if (sumOfValues > 0) {
-            newCompletion[unit] = (1 / sumOfValues) * 100;
-          }
-
-          console.log(totalConditions);
-        } else {
-          const satisfiedConditions = Object.keys(unitConditions).filter(
-            (condition) =>
-              (initialCount[condition] || 0) >= unitConditions[condition],
-          ).values;
-        }
+        var sum = 0;
+        const currentConditions = Object.keys(unitConditions).filter(
+          condition => (sum += initialCount[condition]),
+        );
+        newCompletion[unit] = (sum / totalConditions) * 100;
         // Calculate completion percentage only if all conditions are satisfied
         // if (satisfiedConditions === totalConditions) {
         //   newCompletion[unit] = 100;
@@ -70,16 +55,14 @@ const Uncommon: React.FC<UncommonProps> = ({ initialCount }) => {
     };
 
     calculateCompletion();
-  }, [initialCount]); // Include 'initialCount' and 'completion' in the dependency array
-
-  // 키보드 이벤트 핸들러 등을 추가
+  }, [initialCount]);
 
   return (
     <div>
-      <p>유닛 완성도</p>
+      <h2>안흔함 유닛</h2>
       {Object.entries(completion).map(([unit, completeness]) => (
         <div key={unit}>
-          <p>{`${unit}: ${completeness.toFixed(2)}%`}</p>
+          <p>{`${unit}: ${completeness}%`}</p>
         </div>
       ))}
     </div>
