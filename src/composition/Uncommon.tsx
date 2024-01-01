@@ -1,10 +1,12 @@
 /* eslint-disable */
+import { useCount } from 'context/UnitCountContext';
 import React, { useState, useEffect } from 'react';
 
 interface UncommonProps {
   initialCount: Record<string, number>;
 }
-const Uncommon: React.FC<UncommonProps> = ({ initialCount }) => {
+const Uncommon: React.FC<UncommonProps> = () => {
+  const { count } = useCount();
   const composition: { [key: string]: { [key: string]: number } } = {
     후쿠로: { 칼병: 2 },
     블루노: { 총병: 2 },

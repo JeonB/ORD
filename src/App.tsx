@@ -103,7 +103,7 @@ const KeyboardCounter: React.FC = () => {
           </p>
         </div>
       ))}
-      <Uncommon initialCount={count} />
+      <Uncommon />
       <button onClick={handleReset}>모두 초기화</button>
     </div>
   );
@@ -114,7 +114,7 @@ const App: React.FC = () => {
   return (
     <div className="App">
       <UnitCountContextProvider>
-        <Uncommon initialCount={count} />
+        <Uncommon />
       </UnitCountContextProvider>
     </div>
   );
