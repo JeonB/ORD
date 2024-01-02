@@ -2,9 +2,6 @@
 import { useCount } from 'context/UnitCountContext';
 import React, { useState, useEffect } from 'react';
 
-// interface UncommonProps {
-//   initialCount: Record<string, number>;
-// }
 const Uncommon = () => {
   const { count } = useCount();
   const composition: { [key: string]: { [key: string]: number } } = {
@@ -30,6 +27,7 @@ const Uncommon = () => {
   useEffect(() => {
     const calculateCompletion = () => {
       const newCompletion = { ...completion }; // 갱신된 유닛 수
+
       Object.keys(composition).forEach(unit => {
         const unitConditions = composition[unit]; // 안흔함 유닛의 조합식
         const totalConditions = Object.values(unitConditions).reduce(function (
@@ -38,32 +36,30 @@ const Uncommon = () => {
         ) {
           return accumulator + currentValue;
         }, 0); // 안흔함 조합에 필요한 유닛의 수
-
+        const totalConditions2 = Object.keys(unitConditions).length;
         let sum = 0;
-
-        if (totalConditions > 0) {
-          let not = 0;
-          Object.keys(unitConditions).forEach(condition => {
-            const conditionCount = count[condition] || 0;
-            const conditionRequirement = unitConditions[condition];
-
-            if (conditionCount >= conditionRequirement) {
-              sum += 1;
-            } else {
-              not += conditionCount / conditionRequirement;
-            }
-          });
-
-          newCompletion[unit] = (sum / totalConditions + (1 - not)) * 100;
+        let temp = 0;
+        let c = 0;
+        Object.keys(unitConditions).forEach(condition => {
+          if (count[condition] < unitConditions[condition]) {
+            temp = count[condition] / unitConditions[condition];
+          } else {
+            sum++;
+            c++;
+          }
+        });
+        if (c < totalConditions2) {
+          newCompletion[unit] = ((temp + sum) / totalConditions2) * 100;
         } else {
-          // 수정된 부분: 흔함 유닛 개수가 0일 때 완성도를 0으로 설정
-          newCompletion[unit] = 0;
+          let test = 100000;
+          Object.keys(unitConditions).forEach(condition => {
+            test = count[condition] < test ? count[condition] : test;
+          });
+          newCompletion[unit] = test * 100;
         }
       });
-
       setCompletion(newCompletion);
     };
-
     calculateCompletion();
   }, [count]);
 
