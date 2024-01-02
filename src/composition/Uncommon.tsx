@@ -2,10 +2,10 @@
 import { useCount } from 'context/UnitCountContext';
 import React, { useState, useEffect } from 'react';
 
-interface UncommonProps {
-  initialCount: Record<string, number>;
-}
-const Uncommon: React.FC<UncommonProps> = () => {
+// interface UncommonProps {
+//   initialCount: Record<string, number>;
+// }
+const Uncommon = () => {
   const { count } = useCount();
   const composition: { [key: string]: { [key: string]: number } } = {
     후쿠로: { 칼병: 2 },
@@ -39,32 +39,40 @@ const Uncommon: React.FC<UncommonProps> = () => {
           return accumulator + currentValue;
         }, 0); // 안흔함 조합에 필요한 유닛의 수
 
-        var sum = 0;
-        const currentConditions = Object.keys(unitConditions).filter(
-          condition => (sum += initialCount[condition]),
-        );
-        newCompletion[unit] = (sum / totalConditions) * 100;
-        // Calculate completion percentage only if all conditions are satisfied
-        // if (satisfiedConditions === totalConditions) {
-        //   newCompletion[unit] = 100;
-        // } else {
-        //   newCompletion[unit] =
-        //     (satisfiedConditions.length / totalConditions) * 100;
-        // }
+        let sum = 0;
+
+        if (totalConditions > 0) {
+          let not = 0;
+          Object.keys(unitConditions).forEach(condition => {
+            const conditionCount = count[condition] || 0;
+            const conditionRequirement = unitConditions[condition];
+
+            if (conditionCount >= conditionRequirement) {
+              sum += 1;
+            } else {
+              not += conditionCount / conditionRequirement;
+            }
+          });
+
+          newCompletion[unit] = (sum / totalConditions + (1 - not)) * 100;
+        } else {
+          // 수정된 부분: 흔함 유닛 개수가 0일 때 완성도를 0으로 설정
+          newCompletion[unit] = 0;
+        }
       });
 
       setCompletion(newCompletion);
     };
 
     calculateCompletion();
-  }, [initialCount]);
+  }, [count]);
 
   return (
     <div>
       <h2>안흔함 유닛</h2>
       {Object.entries(completion).map(([unit, completeness]) => (
         <div key={unit}>
-          <p>{`${unit}: ${completeness}%`}</p>
+          <p>{`${unit}: ${completeness}%`}</p> {/* 완성도 */}
         </div>
       ))}
     </div>

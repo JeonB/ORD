@@ -144,7 +144,7 @@ const UnitCountContextProvider: React.FC<UnitCountContextProviderProps> = ({
 const useCount = (): UnitCountContextData => {
   const context = useContext(UnitCountContext);
   if (!context) {
-    throw new Error('프로바이더 내부에서 생성해야됨 님아');
+    throw new Error('프로바이더 내부에서 생성해야 돼요 님아');
   }
   return context;
 };
