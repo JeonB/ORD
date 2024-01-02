@@ -2,6 +2,7 @@
 import { useCount } from 'context/UnitCountContext';
 import React, { useState, useEffect } from 'react';
 
+//TODO: 안흔함 유닛 옆에 조합 버튼 만들기
 const Uncommon = () => {
   const { count } = useCount();
   const composition: { [key: string]: { [key: string]: number } } = {
@@ -30,30 +31,25 @@ const Uncommon = () => {
 
       Object.keys(composition).forEach(unit => {
         const unitConditions = composition[unit]; // 안흔함 유닛의 조합식
-        const totalConditions = Object.values(unitConditions).reduce(function (
-          accumulator,
-          currentValue,
-        ) {
-          return accumulator + currentValue;
-        }, 0); // 안흔함 조합에 필요한 유닛의 수
-        const totalConditions2 = Object.keys(unitConditions).length;
-        let sum = 0;
-        let temp = 0;
-        let c = 0;
+        const totalConditions = Object.keys(unitConditions).length; // 안흔함 조합에 필요한 유닛
+        let sameValue = 0; // 조합식에서 동일한 유닛만 있는 경우의 값
+        let c = 0; // 조합식에서 세부 조건을 만족할 시 증가하는 값
         Object.keys(unitConditions).forEach(condition => {
           if (count[condition] < unitConditions[condition]) {
-            temp = count[condition] / unitConditions[condition];
+            sameValue = count[condition] / unitConditions[condition];
           } else {
-            sum++;
             c++;
           }
         });
-        if (c < totalConditions2) {
-          newCompletion[unit] = ((temp + sum) / totalConditions2) * 100;
+        if (c < totalConditions) {
+          newCompletion[unit] = ((sameValue + c) / totalConditions) * 100;
         } else {
-          let test = 100000;
+          let test = Number.MAX_SAFE_INTEGER;
           Object.keys(unitConditions).forEach(condition => {
-            test = count[condition] < test ? count[condition] : test;
+            test =
+              count[condition] < test
+                ? count[condition] / unitConditions[condition]
+                : test;
           });
           newCompletion[unit] = test * 100;
         }
