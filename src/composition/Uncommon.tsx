@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 
 //TODO: 안흔함 유닛 옆에 조합 버튼 만들기
 const Uncommon = () => {
-  const { count } = useCount();
+  const { count, setCount } = useCount();
   const composition: { [key: string]: { [key: string]: number } } = {
     후쿠로: { 칼병: 2 },
     블루노: { 총병: 2 },
@@ -59,12 +59,33 @@ const Uncommon = () => {
     calculateCompletion();
   }, [count]);
 
+  const handleCombine = (unit: string) => {
+    const ncompletion = { ...completion };
+    const unitCondition = composition[unit];
+    if (ncompletion[unit] >= 100) {
+      ncompletion[unit] -= 100;
+      setCompletion(ncompletion);
+    }
+    Object.keys(unitCondition).forEach(condition => {
+      count[condition] -= unitCondition[condition];
+      console.log(count[condition]);
+    });
+    setCount(count);
+  };
   return (
     <div>
       <h2>안흔함 유닛</h2>
       {Object.entries(completion).map(([unit, completeness]) => (
         <div key={unit}>
-          <p>{`${unit}: ${completeness}%`}</p> {/* 완성도 */}
+          <p>
+            {`${unit}: ${completeness}%`}
+            <button
+              style={{ marginLeft: 20 }}
+              onClick={() => handleCombine(unit)}>
+              조합
+            </button>
+          </p>{' '}
+          {/* 완성도 */}
         </div>
       ))}
     </div>

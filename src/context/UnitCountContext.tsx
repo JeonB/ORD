@@ -4,14 +4,16 @@ import React, {
   useState,
   ReactNode,
   useEffect,
+  Dispatch,
+  SetStateAction,
 } from 'react';
 
 interface UnitCountContextData {
   handleReset: () => void;
   handleCharacterReset: (character: string) => void;
   count: common;
+  setCount: Dispatch<SetStateAction<common>>;
 }
-
 interface common {
   루피: number;
   조로: number;
@@ -121,6 +123,7 @@ const UnitCountContextProvider: React.FC<UnitCountContextProviderProps> = ({
         handleReset,
         handleCharacterReset,
         count,
+        setCount,
       }}>
       {Object.entries(characterKeys).map(([key, character]) => (
         <div key={key}>
