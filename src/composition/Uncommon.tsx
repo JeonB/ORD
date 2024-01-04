@@ -2,7 +2,6 @@
 import { useCount } from 'context/UnitCountContext';
 import React, { useState, useEffect } from 'react';
 
-//TODO: 안흔함 유닛 옆에 조합 버튼 만들기
 const Uncommon = () => {
   const { count, setCount } = useCount();
   const composition: { [key: string]: { [key: string]: number } } = {
@@ -59,19 +58,37 @@ const Uncommon = () => {
     calculateCompletion();
   }, [count]);
 
+  // 함수형 업데이트
   const handleCombine = (unit: string) => {
+    setCount(prevCount => {
+      const newCount = { ...prevCount };
+      const unitCondition = composition[unit];
+
+      if (completion[unit] >= 100) {
+        completion[unit] -= 100;
+        setCompletion({ ...completion }); // 리렌더링함으로써 UI업데이트
+        Object.keys(unitCondition).forEach(condition => {
+          newCount[condition] -= unitCondition[condition];
+        });
+      }
+
+      return newCount;
+    });
+  };
+
+  // 비동기적 업데이트
+  /* const handleCombine = (unit: string) => {
     const ncompletion = { ...completion };
     const unitCondition = composition[unit];
     if (ncompletion[unit] >= 100) {
       ncompletion[unit] -= 100;
       setCompletion(ncompletion);
+      Object.keys(unitCondition).forEach(condition => {
+        count[condition] -= unitCondition[condition];
+      });
     }
-    Object.keys(unitCondition).forEach(condition => {
-      count[condition] -= unitCondition[condition];
-      console.log(count[condition]);
-    });
     setCount(count);
-  };
+  }; */
   return (
     <div>
       <h2>안흔함 유닛</h2>
