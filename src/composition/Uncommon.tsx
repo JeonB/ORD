@@ -65,8 +65,9 @@ const Uncommon = () => {
       const unitCondition = composition[unit];
 
       if (completion[unit] >= 100) {
-        completion[unit] -= 100;
-        setCompletion({ ...completion }); // 리렌더링함으로써 UI업데이트
+        const newCompletion = { ...completion };
+        newCompletion[unit] -= 100;
+        setCompletion({ ...newCompletion }); // 리렌더링함으로써 UI업데이트
         Object.keys(unitCondition).forEach(condition => {
           newCount[condition] -= unitCondition[condition];
         });
