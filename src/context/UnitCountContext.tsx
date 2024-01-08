@@ -1,3 +1,4 @@
+import { Stack } from '@mui/material';
 import React, {
   createContext,
   useContext,
@@ -125,20 +126,26 @@ const UnitCountContextProvider: React.FC<UnitCountContextProviderProps> = ({
         count,
         setCount,
       }}>
-      {Object.entries(characterKeys).map(([key, character]) => (
-        <div key={key}>
-          <p>
-            {`${character} ${key}: ${count[character as keyof typeof count]}`}
+      <Stack direction={'row'}>
+        <Stack>
+          {Object.entries(characterKeys).map(([key, character]) => (
+            <div key={key}>
+              <p>
+                {`${character} ${key}: ${
+                  count[character as keyof typeof count]
+                }`}
 
-            <button
-              style={{ marginLeft: 20 }}
-              onClick={() => handleCharacterReset(character)}>
-              초기화
-            </button>
-          </p>
-        </div>
-      ))}
-      {children}
+                <button
+                  style={{ marginLeft: 20 }}
+                  onClick={() => handleCharacterReset(character)}>
+                  초기화
+                </button>
+              </p>
+            </div>
+          ))}
+        </Stack>
+        {children}
+      </Stack>
       <button onClick={handleReset}>모두 초기화</button>
     </UnitCountContext.Provider>
   );
