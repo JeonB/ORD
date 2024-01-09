@@ -1,6 +1,13 @@
+/* eslint-disable */
 import { useCount } from 'context/UnitCountContext';
 import React, { useState, useEffect } from 'react';
+import { DataGrid } from '@mui/x-data-grid';
+import { Button } from 'react-admin';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { Stack, Typography } from '@mui/material';
+
 const Special = () => {
+  const theme = createTheme();
   const { count, setCount } = useCount();
   const composition: { [key: string]: { [key: string]: number } } = {
     드레이크: { 타시기: 1, 후쿠로: 1, 쵸파: 1 },
@@ -93,23 +100,56 @@ const Special = () => {
       return newCount;
     });
   };
+
+  const rows = Object.entries(completion).map(([unit, completeness]) => ({
+    unit: unit,
+    completeness: completeness,
+    button: (
+      <button style={{ marginLeft: 20 }} onClick={() => handleCombine(unit)}>
+        조합
+      </button>
+    ),
+  }));
   return (
-    <div>
-      <h2>특별함 유닛</h2>
-      {Object.entries(completion).map(([unit, completeness]) => (
-        <div key={unit}>
-          <p>
-            {`${unit}: ${completeness}%`}
-            <button
-              style={{ marginLeft: 20 }}
-              onClick={() => handleCombine(unit)}>
-              조합
-            </button>
-          </p>{' '}
-          {/* 완성도 */}
-        </div>
-      ))}
-    </div>
+    // <div>
+    //   <h2>특별함 유닛</h2>
+    //   {Object.entries(completion).map(([unit, completeness]) => (
+    //     <div key={unit}>
+    //       <p>
+    //         {`${unit}: ${completeness}%`}
+    //         <button
+    //           style={{ marginLeft: 20 }}
+    //           onClick={() => handleCombine(unit)}>
+    //           조합
+    //         </button>
+    //       </p>{' '}
+    //       {/* 완성도 */}
+    //     </div>
+    //   ))}
+    // </div>
+    <Stack>
+      <Typography variant="h5">특별함 유닛</Typography>
+      <DataGrid
+        columns={[
+          { field: 'unit', headerName: '유닛' },
+          { field: 'completeness', headerName: '완성도' },
+          {
+            field: 'action',
+            headerName: ' ',
+            renderCell: params => (
+              <ThemeProvider theme={theme}>
+                <Button
+                  style={{ marginLeft: 20 }}
+                  onClick={() => handleCombine(params.row.unit)}
+                  label="조합"></Button>
+              </ThemeProvider>
+            ),
+          },
+        ]}
+        rows={rows}
+        getRowId={row => row.unit}
+      />
+    </Stack>
   );
 };
 export default Special;
