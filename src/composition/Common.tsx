@@ -78,9 +78,15 @@ export const Common = () => {
       console.error('유효한 한글 문자열을 찾을 수 없습니다.');
     }
   };
-
+  const findKeyByValue = (
+    value: string,
+    obj: CharacterKeys,
+  ): string | undefined => {
+    const entry = Object.entries(obj).find(([key, val]) => val === value);
+    return entry ? entry[0] : undefined;
+  };
   const rows = Object.entries(commonCount).map(([unit, count]) => ({
-    unit: unit,
+    unit: unit + findKeyByValue(unit, characterKeys),
     count: count,
     button: (
       <button

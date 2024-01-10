@@ -1,9 +1,6 @@
 /* eslint-disable */
-import { DataGrid } from '@mui/x-data-grid';
 import { useCount } from 'context/UnitCountContext';
 import React, { useState, useEffect } from 'react';
-import { Button } from 'react-admin';
-import { Stack, Typography } from '@mui/material';
 import { CompositionTable } from 'components/CompostionTable';
 
 export const Uncommon = () => {
@@ -29,39 +26,90 @@ export const Uncommon = () => {
     Object.fromEntries(Object.keys(composition).map(unit => [unit, 0])),
   );
 
+  // useEffect(() => {
+  //   const calculateCompletion = () => {
+  //     const newCompletion = { ...completion };
+
+  //     Object.keys(composition).forEach(unit => {
+  //       const unitConditions = composition[unit]; // 안흔함 유닛의 조합식 조건 ex)  니코로빈(unit): { 나미: 1, 상디: 1 }(unitConditions)
+  //       const totalConditions = Object.keys(unitConditions).length; // 안흔함 조합에 필요한 조건 수
+  //       let sameUnitValue = 0;
+  //       let satisfiedConditionsCount = 0;
+  //       Object.keys(unitConditions).forEach(condition => {
+  //         if (commonCount[condition] < unitConditions[condition]) {
+  //           sameUnitValue = commonCount[condition] / unitConditions[condition];
+  //         } else {
+  //           satisfiedConditionsCount++;
+  //         }
+  //       });
+  //       if (satisfiedConditionsCount < totalConditions) {
+  //         newCompletion[unit] =
+  //           ((sameUnitValue + satisfiedConditionsCount) / totalConditions) *
+  //           100;
+  //       } else {
+  //         let test = Number.MAX_SAFE_INTEGER;
+  //         Object.keys(unitConditions).forEach(condition => {
+  //           test =
+  //             commonCount[condition] < test
+  //               ? commonCount[condition] / unitConditions[condition]
+  //               : test;
+  //         });
+  //         newCompletion[unit] = test * 100;
+  //       }
+  //     });
+  //     setCompletion(newCompletion);
+  //   };
+  //   calculateCompletion();
+  // }, [commonCount, unCommonCount]);
+
   useEffect(() => {
     const calculateCompletion = () => {
       const newCompletion = { ...completion };
-
+      const unCommonCounts = { ...unCommonCount };
       Object.keys(composition).forEach(unit => {
-        const unitConditions = composition[unit]; // 안흔함 유닛의 조합식
-        const totalConditions = Object.keys(unitConditions).length; // 안흔함 조합에 필요한 유닛
-        let sameValue = 0; // 조합식에서 동일한 유닛만 있는 경우의 값
-        let c = 0; // 조합식에서 세부 조건을 만족할 시 증가하는 값
-        Object.keys(unitConditions).forEach(condition => {
-          if (commonCount[condition] < unitConditions[condition]) {
-            sameValue = commonCount[condition] / unitConditions[condition];
-          } else {
-            c++;
-          }
-        });
-        if (c < totalConditions) {
-          newCompletion[unit] = ((sameValue + c) / totalConditions) * 100;
+        const unitConditions = composition[unit];
+        const totalConditions = Object.keys(unitConditions).length;
+        let satisfiedConditionsCount = 0;
+
+        const sameUnitValue = Object.keys(unitConditions).reduce(
+          (accumulator, condition) => {
+            if (commonCount[condition] < unitConditions[condition]) {
+              return commonCount[condition] / unitConditions[condition];
+            } else {
+              satisfiedConditionsCount++;
+              return accumulator;
+            }
+          },
+          0,
+        );
+
+        if (satisfiedConditionsCount < totalConditions) {
+          newCompletion[unit] =
+            ((sameUnitValue + satisfiedConditionsCount) / totalConditions) *
+            100;
         } else {
-          let test = Number.MAX_SAFE_INTEGER;
-          Object.keys(unitConditions).forEach(condition => {
-            test =
-              commonCount[condition] < test
+          const test = Object.keys(unitConditions).reduce(
+            (accumulator, condition) => {
+              return commonCount[condition] < accumulator
                 ? commonCount[condition] / unitConditions[condition]
-                : test;
-          });
+                : accumulator;
+            },
+            Number.MAX_SAFE_INTEGER,
+          );
           newCompletion[unit] = test * 100;
         }
+
+        if (completion[unit] >= 100) {
+          unCommonCounts[unit] = Math.floor(completion[unit] / 100);
+          setUnCommonCount(unCommonCounts);
+        }
       });
+
       setCompletion(newCompletion);
     };
+
     calculateCompletion();
-  }, [commonCount, unCommonCount]);
+  }, [commonCount]);
 
   // 함수형 업데이트
   const handleCombine = (unit: string) => {
@@ -77,7 +125,6 @@ export const Uncommon = () => {
           newCount[condition] -= unitCondition[condition];
         });
       }
-
       return newCount;
     });
   };

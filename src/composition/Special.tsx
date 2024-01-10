@@ -4,8 +4,14 @@ import React, { useState, useEffect } from 'react';
 import { CompositionTable } from 'components/CompostionTable';
 
 export const Special = () => {
-  const { commonCount, setCommonCount, unCommonCount, setUnCommonCount } =
-    useCount();
+  const {
+    commonCount,
+    setCommonCount,
+    unCommonCount,
+    setUnCommonCount,
+    specialCount,
+    setSpecialCount,
+  } = useCount();
   const composition: { [key: string]: { [key: string]: number } } = {
     드레이크: { 타시기: 1, 후쿠로: 1, 쵸파: 1 },
     갓에넬: { 저격왕: 1, 베포: 1, 상디: 1 },
@@ -47,38 +53,47 @@ export const Special = () => {
 
   useEffect(() => {
     const calculateCompletion = () => {
-      const newCompletion = { ...completion }; // 갱신된 유닛 수
-
+      const newCompletion = { ...completion };
       Object.keys(composition).forEach(unit => {
-        const unitConditions = composition[unit]; // 안흔함 유닛의 조합식
-        const totalConditions = Object.keys(unitConditions).length; // 안흔함 조합에 필요한 유닛
-        let sameValue = 0; // 조합식에서 동일한 유닛만 있는 경우의 값
-        let c = 0; // 조합식에서 세부 조건을 만족할 시 증가하는 값
-        Object.keys(unitConditions).forEach(condition => {
-          if (commonCount[condition] < unitConditions[condition]) {
-            sameValue = commonCount[condition] / unitConditions[condition];
-          } else {
-            c++;
-          }
-        });
-        if (c < totalConditions) {
-          newCompletion[unit] = ((sameValue + c) / totalConditions) * 100;
+        const unitConditions = composition[unit];
+        console.log(unitConditions);
+        const totalConditions = Object.keys(unitConditions).length;
+        let satisfiedConditionsCount = 0;
+
+        const sameUnitValue = Object.keys(unitConditions).reduce(
+          (accumulator, condition) => {
+            if (commonCount[condition] < unitConditions[condition]) {
+              return commonCount[condition] / unitConditions[condition];
+            } else {
+              satisfiedConditionsCount++;
+              return accumulator;
+            }
+          },
+          0,
+        );
+
+        if (satisfiedConditionsCount < totalConditions) {
+          newCompletion[unit] =
+            ((sameUnitValue + satisfiedConditionsCount) / totalConditions) *
+            100;
         } else {
-          let test = Number.MAX_SAFE_INTEGER;
-          Object.keys(unitConditions).forEach(condition => {
-            test =
-              commonCount[condition] < test
+          const test = Object.keys(unitConditions).reduce(
+            (accumulator, condition) => {
+              return commonCount[condition] < accumulator
                 ? commonCount[condition] / unitConditions[condition]
-                : test;
-          });
+                : accumulator;
+            },
+            Number.MAX_SAFE_INTEGER,
+          );
           newCompletion[unit] = test * 100;
         }
       });
+
       setCompletion(newCompletion);
     };
-    calculateCompletion();
-  }, [commonCount, unCommonCount]);
 
+    calculateCompletion();
+  }, [commonCount]);
   // 함수형 업데이트
   const handleCombine = (unit: string) => {
     setCommonCount(prevCount => {
