@@ -3,12 +3,12 @@ import { DataGrid } from '@mui/x-data-grid';
 import { useCount } from 'context/UnitCountContext';
 import React, { useState, useEffect } from 'react';
 import { Button } from 'react-admin';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Stack, Typography } from '@mui/material';
+import { CompositionTable } from 'components/CompostionTable';
 
-const Uncommon = () => {
-  const theme = createTheme();
-  const { count, setCount } = useCount();
+export const Uncommon = () => {
+  const { commonCount, setCommonCount, unCommonCount, setUnCommonCount } =
+    useCount();
   const composition: { [key: string]: { [key: string]: number } } = {
     후쿠로: { 칼병: 2 },
     블루노: { 총병: 2 },
@@ -31,7 +31,7 @@ const Uncommon = () => {
 
   useEffect(() => {
     const calculateCompletion = () => {
-      const newCompletion = { ...completion }; // 갱신된 유닛 수
+      const newCompletion = { ...completion };
 
       Object.keys(composition).forEach(unit => {
         const unitConditions = composition[unit]; // 안흔함 유닛의 조합식
@@ -39,8 +39,8 @@ const Uncommon = () => {
         let sameValue = 0; // 조합식에서 동일한 유닛만 있는 경우의 값
         let c = 0; // 조합식에서 세부 조건을 만족할 시 증가하는 값
         Object.keys(unitConditions).forEach(condition => {
-          if (count[condition] < unitConditions[condition]) {
-            sameValue = count[condition] / unitConditions[condition];
+          if (commonCount[condition] < unitConditions[condition]) {
+            sameValue = commonCount[condition] / unitConditions[condition];
           } else {
             c++;
           }
@@ -51,8 +51,8 @@ const Uncommon = () => {
           let test = Number.MAX_SAFE_INTEGER;
           Object.keys(unitConditions).forEach(condition => {
             test =
-              count[condition] < test
-                ? count[condition] / unitConditions[condition]
+              commonCount[condition] < test
+                ? commonCount[condition] / unitConditions[condition]
                 : test;
           });
           newCompletion[unit] = test * 100;
@@ -61,11 +61,11 @@ const Uncommon = () => {
       setCompletion(newCompletion);
     };
     calculateCompletion();
-  }, [count]);
+  }, [commonCount, unCommonCount]);
 
   // 함수형 업데이트
   const handleCombine = (unit: string) => {
-    setCount(prevCount => {
+    setCommonCount(prevCount => {
       const newCount = { ...prevCount };
       const unitCondition = composition[unit];
 
@@ -82,69 +82,11 @@ const Uncommon = () => {
     });
   };
 
-  // 비동기적 업데이트
-  /* const handleCombine = (unit: string) => {
-    const ncompletion = { ...completion };
-    const unitCondition = composition[unit];
-    if (ncompletion[unit] >= 100) {
-      ncompletion[unit] -= 100;
-      setCompletion(ncompletion);
-      Object.keys(unitCondition).forEach(condition => {
-        count[condition] -= unitCondition[condition];
-      });
-    }
-    setCount(count);
-  }; */
-  const rows = Object.entries(completion).map(([unit, completeness]) => ({
-    unit: unit,
-    completeness: completeness,
-    button: (
-      <button style={{ marginLeft: 20 }} onClick={() => handleCombine(unit)}>
-        조합
-      </button>
-    ),
-  }));
   return (
-    // <div>
-    //   <h2>안흔함 유닛</h2>
-    //   {Object.entries(completion).map(([unit, completeness]) => (
-    //     <div key={unit}>
-    //       <p>
-    //         {`${unit}: ${completeness}%`}
-    //         <button
-    //           style={{ marginLeft: 20 }}
-    //           onClick={() => handleCombine(unit)}>
-    //           조합
-    //         </button>
-    //       </p>{' '}
-    //       {/* 완성도 */}
-    //     </div>
-    //   ))}
-    // </div>
-    <Stack>
-      <Typography variant="h5">안흔함 유닛</Typography>
-      <DataGrid
-        columns={[
-          { field: 'unit', headerName: '유닛' },
-          { field: 'completeness', headerName: '완성도' },
-          {
-            field: 'action',
-            headerName: ' ',
-            renderCell: params => (
-              <ThemeProvider theme={theme}>
-                <Button
-                  style={{ marginLeft: 20 }}
-                  onClick={() => handleCombine(params.row.unit)}
-                  label="조합"></Button>
-              </ThemeProvider>
-            ),
-          },
-        ]}
-        rows={rows}
-        getRowId={row => row.unit}
-      />
-    </Stack>
+    <CompositionTable
+      name={'안흔함'}
+      completion={completion}
+      handleCombine={handleCombine}
+    />
   );
 };
-
-export default Uncommon;

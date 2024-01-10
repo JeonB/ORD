@@ -1,16 +1,21 @@
 /* eslint-disable */
 import React from 'react';
-import Uncommon from './composition/Uncommon';
 import { UnitCountContextProvider } from 'context/UnitCountContext';
-import Special from 'composition/Special';
-import { Stack } from '@mui/material';
+import { Stack, ThemeProvider, createTheme } from '@mui/material';
+import { Common, Special, Uncommon } from 'composition';
 
 const App: React.FC = () => {
+  const theme = createTheme();
   return (
     <div className="App">
       <UnitCountContextProvider>
-        <Uncommon />
-        <Special />
+        <ThemeProvider theme={theme}>
+          <Stack>
+            <Common />
+            <Uncommon />
+          </Stack>
+          <Special />
+        </ThemeProvider>
       </UnitCountContextProvider>
     </div>
   );
