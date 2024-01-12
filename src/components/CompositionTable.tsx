@@ -42,6 +42,7 @@ export const CompositionTable = (props: {
         ]}
         rows={rows}
         getRowId={row => row.unit}
+        sx={{ width: 350 }}
       />
     </Stack>
   );

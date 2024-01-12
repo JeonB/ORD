@@ -2,7 +2,7 @@
 import React from 'react';
 import { UnitCountContextProvider } from 'context/UnitCountContext';
 import { Stack, ThemeProvider, createTheme } from '@mui/material';
-import { Common, Special, Uncommon } from 'composition';
+import { Common, Rare, Special, Uncommon } from 'composition';
 
 const App: React.FC = () => {
   const theme = createTheme();
@@ -15,6 +15,7 @@ const App: React.FC = () => {
             <Uncommon />
           </Stack>
           <Special />
+          <Rare />
         </ThemeProvider>
       </UnitCountContextProvider>
     </div>
