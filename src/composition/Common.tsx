@@ -115,7 +115,12 @@ export const Common = () => {
   return (
     <Stack>
       <Typography variant="h5">흔함 유닛</Typography>
-      <DataGrid columns={columns} rows={rows} getRowId={row => row.unit} />
+      <DataGrid
+        columns={columns}
+        rows={rows}
+        getRowId={row => row.unit}
+        sx={{ width: 350 }}
+      />
     </Stack>
   );
 };
