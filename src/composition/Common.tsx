@@ -1,5 +1,5 @@
 import { Stack, Typography } from '@mui/material';
-import { DataGrid } from '@mui/x-data-grid';
+import { DataGrid, GridCellParams } from '@mui/x-data-grid';
 import { Button } from 'ra-ui-materialui';
 import { useCount } from 'context/UnitCountContext';
 import React, { useEffect } from 'react';
@@ -51,6 +51,32 @@ export const Common = () => {
         };
       });
     }
+  };
+
+  const handleUnitClick = (character: string) => {
+    setCommonCount((prevCount: Record<string, number>) => {
+      const updatedCount: { [key: string]: number } = { ...prevCount };
+      updatedCount[character] = (prevCount[character] || 0) + 1;
+      return updatedCount as {
+        루피: number;
+        조로: number;
+        나미: number;
+        우솝: number;
+        상디: number;
+        쵸파: number;
+        버기: number;
+        총병: number;
+        칼병: number;
+      };
+    });
+  };
+  const handleCellClick = (
+    params: GridCellParams,
+    event: React.SyntheticEvent<Element, Event>,
+  ) => {
+    // 클릭 이벤트 처리
+    const clickedUnit = params.row.unit;
+    handleUnitClick(clickedUnit);
   };
 
   useEffect(() => {
@@ -120,6 +146,7 @@ export const Common = () => {
         rows={rows}
         getRowId={row => row.unit}
         sx={{ width: 350 }}
+        onCellClick={handleCellClick}
       />
     </Stack>
   );
