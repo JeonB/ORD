@@ -25,6 +25,35 @@ interface common {
   [key: string]: number; // 인덱스 시그니처 추가
 }
 
+interface random {
+  k: number;
+  나루토선인모드: number;
+  메구밍: number;
+  뱀파이어: number;
+  센토이스즈: number;
+  야가미라이토: number;
+  옌: number;
+  요츠바: number;
+  요미: number;
+  율자: number;
+  펭귄: number;
+  토우마: number;
+  이치고: number;
+  츠바사: number;
+  [key: string]: number;
+}
+
+interface etc {
+  초월쿠마: number;
+  해잭선: number;
+  고대의배: number;
+  레일리: number;
+  좀비: number;
+  금: number;
+  목재: number;
+  랜덤전용유닛: number;
+  행운의토큰: number;
+}
 interface UnitCountContextProviderProps {
   children: ReactNode;
 }

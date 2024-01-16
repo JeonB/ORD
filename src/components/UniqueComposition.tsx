@@ -2,7 +2,7 @@ import { useCount } from 'context/UnitCountContext';
 import React, { useState, useEffect } from 'react';
 import { CompositionTable } from './CompositionTable';
 
-export const Composition = (props: {
+export const UniqueComposition = (props: {
   composition: { [key: string]: { [key: string]: number } };
   name: string;
 }) => {
