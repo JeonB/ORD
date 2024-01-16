@@ -32,7 +32,7 @@ export const CompositionTable = (props: {
           {
             field: 'action',
             headerName: ' ',
-            renderCell: params => (
+            renderCell: (params: { row: { unit: string } }) => (
               <Button
                 style={{ marginLeft: 20 }}
                 onClick={() => handleCombine(params.row.unit)}
@@ -41,7 +41,7 @@ export const CompositionTable = (props: {
           },
         ]}
         rows={rows}
-        getRowId={row => row.unit}
+        getRowId={(row: { unit: string }) => row.unit}
         sx={{ width: 350 }}
       />
     </Stack>
