@@ -12,27 +12,10 @@ export const CompositionTable = (props: {
   handleCombine: (unit: string) => void;
 }) => {
   const { name, completion, handleCombine } = props;
-  //   const handleCombine = (unit: string) => {
-  //     setCount(prevCount => {
-  //       const newCount = { ...prevCount };
-  //       const unitCondition = composition[unit];
-
-  //       if (completion[unit] >= 100) {
-  //         const newCompletion = { ...completion };
-  //         newCompletion[unit] -= 100;
-  //         setCompletion({ ...newCompletion }); // 리렌더링함으로써 UI업데이트
-  //         Object.keys(unitCondition).forEach(condition => {
-  //           newCount[condition] -= unitCondition[condition];
-  //         });
-  //       }
-
-  //       return newCount;
-  //     });
-  //   };
 
   const rows = Object.entries(completion).map(([unit, completeness]) => ({
     unit: unit,
-    completeness: completeness,
+    completeness: Math.floor(completeness) + '%',
     button: (
       <button style={{ marginLeft: 20 }} onClick={() => handleCombine(unit)}>
         조합
@@ -49,7 +32,7 @@ export const CompositionTable = (props: {
           {
             field: 'action',
             headerName: ' ',
-            renderCell: params => (
+            renderCell: (params: { row: { unit: string } }) => (
               <Button
                 style={{ marginLeft: 20 }}
                 onClick={() => handleCombine(params.row.unit)}
@@ -58,7 +41,8 @@ export const CompositionTable = (props: {
           },
         ]}
         rows={rows}
-        getRowId={row => row.unit}
+        getRowId={(row: { unit: string }) => row.unit}
+        sx={{ width: 350 }}
       />
     </Stack>
   );
