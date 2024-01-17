@@ -7,7 +7,7 @@ export const Composition = (props: {
   name: string;
 }) => {
   const { composition, name } = props;
-  const { commonCount, setCommonCount } = useCount();
+  const { commonCount, setCommonCount, etcCount, setEtcCount } = useCount();
   const [completion, setCompletion] = useState<{ [key: string]: number }>(
     Object.fromEntries(Object.keys(composition).map(unit => [unit, 0])),
   );
@@ -18,12 +18,19 @@ export const Composition = (props: {
       Object.keys(composition).forEach(unit => {
         const unitConditions = composition[unit];
         const totalConditions = Object.keys(unitConditions).length;
+        const totalUnitCount = Object.keys(unitConditions).reduce(
+          (accumulator, unit) => accumulator + unitConditions[unit],
+          0,
+        );
+        console.log(unit, totalUnitCount);
         let satisfiedConditionsCount = 0;
 
         const sameUnitValue = Object.keys(unitConditions).reduce(
           (accumulator, condition) => {
             if (commonCount[condition] < unitConditions[condition]) {
-              return commonCount[condition] / unitConditions[condition];
+              return commonCount[condition];
+            } else if (etcCount[condition] < unitConditions[condition]) {
+              return etcCount[condition];
             } else {
               satisfiedConditionsCount++;
               return accumulator;
@@ -33,14 +40,19 @@ export const Composition = (props: {
         );
         if (satisfiedConditionsCount < totalConditions) {
           newCompletion[unit] =
-            ((sameUnitValue + satisfiedConditionsCount) / totalConditions) *
-            100;
+            ((sameUnitValue + satisfiedConditionsCount) / totalUnitCount) * 100;
         } else {
           const minConditionRatio = Object.keys(unitConditions).reduce(
             (accumulator, condition) => {
-              return commonCount[condition] < accumulator
-                ? commonCount[condition] / unitConditions[condition]
-                : accumulator;
+              {
+                if (commonCount[condition] < accumulator) {
+                  return commonCount[condition] / unitConditions[condition];
+                } else if (etcCount[condition] < accumulator) {
+                  return etcCount[condition] / unitConditions[condition];
+                } else {
+                  return accumulator;
+                }
+              }
             },
             Number.MAX_SAFE_INTEGER,
           );
@@ -52,7 +64,7 @@ export const Composition = (props: {
     };
 
     calculateCompletion();
-  }, [commonCount]);
+  }, [commonCount, etcCount]);
   // 함수형 업데이트
   const handleCombine = (unit: string) => {
     setCommonCount(prevCount => {

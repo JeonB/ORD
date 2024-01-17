@@ -36,6 +36,7 @@ export const Special = () => {
     파이러츠도킹: { 루피: 2, 우솝: 2, 조로: 1 },
     에이스특별함: { 총병: 2, 루피: 2, 우솝: 1 },
     헤르메포: { 쵸파: 1, 조로: 2, 상디: 1 },
+    압살롬: { 좀비: 3, 나미: 1 },
   };
 
   return <Composition composition={composition} name={'특별함'} />;
