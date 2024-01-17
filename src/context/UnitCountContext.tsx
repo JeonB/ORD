@@ -11,6 +11,10 @@ import React, {
 interface UnitCountContextData {
   commonCount: common;
   setCommonCount: Dispatch<SetStateAction<common>>;
+  etcCount: etc;
+  setEtcCount: Dispatch<SetStateAction<etc>>;
+  randomCount: random;
+  setRandomCount: Dispatch<SetStateAction<random>>;
 }
 interface common {
   루피: number;
@@ -53,6 +57,7 @@ interface etc {
   목재: number;
   랜덤전용유닛: number;
   행운의토큰: number;
+  [key: string]: number;
 }
 interface UnitCountContextProviderProps {
   children: ReactNode;
@@ -76,14 +81,45 @@ const UnitCountContextProvider: React.FC<UnitCountContextProviderProps> = ({
     총병: 0,
     칼병: 0,
   };
-
+  const initialRandomCount = {
+    k: 0,
+    나루토선인모드: 0,
+    메구밍: 0,
+    뱀파이어: 0,
+    센토이스즈: 0,
+    야가미라이토: 0,
+    옌: 0,
+    요츠바: 0,
+    요미: 0,
+    율자: 0,
+    펭귄: 0,
+    토우마: 0,
+    이치고: 0,
+    츠바사: 0,
+  };
+  const initialEtcCount = {
+    초월쿠마: 0,
+    해잭선: 0,
+    고대의배: 0,
+    레일리: 0,
+    좀비: 3,
+    금: 0,
+    목재: 0,
+    랜덤전용유닛: 0,
+    행운의토큰: 0,
+  };
   const [commonCount, setCommonCount] = useState(initialCommonCount);
-
+  const [randomCount, setRandomCount] = useState(initialRandomCount);
+  const [etcCount, setEtcCount] = useState(initialEtcCount);
   return (
     <UnitCountContext.Provider
       value={{
         commonCount,
         setCommonCount,
+        randomCount,
+        setRandomCount,
+        etcCount,
+        setEtcCount,
       }}>
       <Stack direction={'row'}>{children}</Stack>
     </UnitCountContext.Provider>
