@@ -7,7 +7,7 @@ export const Composition = (props: {
   name: string;
 }) => {
   const { composition, name } = props;
-  const { commonCount, setCommonCount, etcCount, setEtcCount } = useCount();
+  const { count, setCount } = useCount();
   const [completion, setCompletion] = useState<{ [key: string]: number }>(
     Object.fromEntries(Object.keys(composition).map(unit => [unit, 0])),
   );
@@ -22,41 +22,34 @@ export const Composition = (props: {
           (accumulator, unit) => accumulator + unitConditions[unit],
           0,
         );
-        console.log(unit, totalUnitCount);
-        let satisfiedConditionsCount = 0;
-
-        const sameUnitValue = Object.keys(unitConditions).reduce(
+        let satisfiedConditions = 0;
+        const checkUnitCondition = Object.keys(unitConditions).reduce(
           (accumulator, condition) => {
-            if (commonCount[condition] < unitConditions[condition]) {
-              return commonCount[condition];
-            } else if (etcCount[condition] < unitConditions[condition]) {
-              return etcCount[condition];
+            const isSameUnitCondition =
+              count[condition] < unitConditions[condition];
+            if (isSameUnitCondition) {
+              return accumulator + count[condition];
             } else {
-              satisfiedConditionsCount++;
-              return accumulator;
+              satisfiedConditions++;
+              return accumulator + unitConditions[condition];
             }
           },
           0,
         );
-        if (satisfiedConditionsCount < totalConditions) {
-          newCompletion[unit] =
-            ((sameUnitValue + satisfiedConditionsCount) / totalUnitCount) * 100;
+        if (satisfiedConditions < totalConditions) {
+          newCompletion[unit] = (checkUnitCondition / totalUnitCount) * 100;
         } else {
-          const minConditionRatio = Object.keys(unitConditions).reduce(
+          //조건식을 만족하는 조합 유닛의 최소 조합 유닛을 기준으로 조합도 산출
+          const minSatisfiedCondition = Object.keys(unitConditions).reduce(
             (accumulator, condition) => {
-              {
-                if (commonCount[condition] < accumulator) {
-                  return commonCount[condition] / unitConditions[condition];
-                } else if (etcCount[condition] < accumulator) {
-                  return etcCount[condition] / unitConditions[condition];
-                } else {
-                  return accumulator;
-                }
-              }
+              const conditionRatio =
+                count[condition] / unitConditions[condition];
+
+              return Math.min(accumulator, conditionRatio);
             },
-            Number.MAX_SAFE_INTEGER,
+            Infinity,
           );
-          newCompletion[unit] = minConditionRatio * 100;
+          newCompletion[unit] = minSatisfiedCondition * 100;
         }
       });
 
@@ -64,10 +57,10 @@ export const Composition = (props: {
     };
 
     calculateCompletion();
-  }, [commonCount, etcCount]);
-  // 함수형 업데이트
+  }, [count]);
+
   const handleCombine = (unit: string) => {
-    setCommonCount(prevCount => {
+    setCount(prevCount => {
       const newCount = { ...prevCount };
       const unitCondition = composition[unit];
 

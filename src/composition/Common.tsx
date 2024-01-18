@@ -1,8 +1,10 @@
+/* eslint-disable */
 import { Stack, Typography } from '@mui/material';
 import { DataGrid, GridCellParams } from '@mui/x-data-grid';
 import { Button } from 'ra-ui-materialui';
 import { useCount } from 'context/UnitCountContext';
 import React, { useEffect } from 'react';
+import { unit } from 'context/UnitCountContext';
 
 interface CharacterKeys {
   q: string;
@@ -14,11 +16,22 @@ interface CharacterKeys {
   d: string;
   f: string;
   g: string;
-  [key: string]: string; // 인덱스 시그니처 추가
+  [key: string]: string;
 }
+//TODO: 성능 개선 필요
 export const Common = () => {
-  const { commonCount, setCommonCount } = useCount();
-
+  const { count, setCount } = useCount();
+  const commonCount = {
+    루피: count.루피,
+    조로: count.조로,
+    나미: count.나미,
+    우솝: count.우솝,
+    상디: count.상디,
+    쵸파: count.쵸파,
+    버기: count.버기,
+    총병: count.총병,
+    칼병: count.칼병,
+  };
   const characterKeys: CharacterKeys = {
     q: '루피',
     w: '조로',
@@ -30,53 +43,33 @@ export const Common = () => {
     f: '총병',
     g: '칼병',
   };
-  // 흔함 유닛에 해당하는 키를 누를 시 기존 개수에 1을 더함
+
   const handleKeyPress = (event: KeyboardEvent) => {
     const key = event.key.toLowerCase();
     if (characterKeys[key]) {
-      setCommonCount((prevCount: Record<string, number>) => {
-        const updatedCount: { [key: string]: number } = { ...prevCount };
+      setCount(prevCount => {
+        const updatedCount: unit = { ...prevCount };
         updatedCount[characterKeys[key]] =
           (prevCount[characterKeys[key]] || 0) + 1;
-        return updatedCount as {
-          루피: number;
-          조로: number;
-          나미: number;
-          우솝: number;
-          상디: number;
-          쵸파: number;
-          버기: number;
-          총병: number;
-          칼병: number;
-        };
+        return updatedCount;
       });
+    }
+  };
+  const handleCellClick = (params: GridCellParams) => {
+    // 클릭 이벤트 처리
+    const clickedUnit = params.row.unit;
+    const unitName = clickedUnit.replace(/[^가-힣]/g, '');
+    if (unitName) {
+      handleUnitClick(unitName);
     }
   };
 
   const handleUnitClick = (character: string) => {
-    setCommonCount((prevCount: Record<string, number>) => {
-      const updatedCount: { [key: string]: number } = { ...prevCount };
+    setCount(prevCount => {
+      const updatedCount: unit = { ...prevCount };
       updatedCount[character] = (prevCount[character] || 0) + 1;
-      return updatedCount as {
-        루피: number;
-        조로: number;
-        나미: number;
-        우솝: number;
-        상디: number;
-        쵸파: number;
-        버기: number;
-        총병: number;
-        칼병: number;
-      };
+      return updatedCount;
     });
-  };
-  const handleCellClick = (
-    params: GridCellParams,
-    event: React.SyntheticEvent<Element, Event>,
-  ) => {
-    // 클릭 이벤트 처리
-    const clickedUnit = params.row.unit;
-    handleUnitClick(clickedUnit);
   };
 
   useEffect(() => {
@@ -87,8 +80,9 @@ export const Common = () => {
       window.removeEventListener('keydown', handleKeyPress);
     };
   }, [commonCount]);
+
   const handleCharacterReset = (character: string) => {
-    setCommonCount(prevCount => ({
+    setCount(prevCount => ({
       ...prevCount,
       [character]: 0,
     }));
@@ -128,7 +122,6 @@ export const Common = () => {
     { field: 'count', headerName: '개수' },
     {
       field: 'action',
-      headerName: ' ',
       renderCell: (params: { row: { unit: string } }) => (
         <Button
           style={{ marginLeft: 20 }}
@@ -145,7 +138,7 @@ export const Common = () => {
         columns={columns}
         rows={rows}
         getRowId={row => row.unit}
-        sx={{ width: 350 }}
+        sx={{ width: 350, cursor: 'pointer' }}
         onCellClick={handleCellClick}
       />
     </Stack>
