@@ -1,6 +1,6 @@
 import { Composition } from 'components';
 import React from 'react';
-//TODO : 압살롬 (좀비+나미) 로직 추가 하기
+
 export const Rare = () => {
   const composition: { [key: string]: { [key: string]: number } } = {
     알로사우로스: {
@@ -151,10 +151,10 @@ export const Rare = () => {
     },
     페로나: {
       상디: 4,
-      나미: 2,
+      나미: 3,
+      좀비: 3,
       쵸파: 2,
       버기: 2,
-      //   압살롬: 1,
     },
   };
   return <Composition composition={composition} name={'희귀함'} />;
