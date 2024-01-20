@@ -1,49 +1,80 @@
-import { Stack, Typography } from '@mui/material';
-import { DataGrid } from '@mui/x-data-grid';
-import { Button } from 'ra-ui-materialui';
+import {
+  Grid,
+  IconButton,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+  Stack,
+  Typography,
+} from '@mui/material';
 import React from 'react';
+import PersonAddIcon from '@mui/icons-material/PersonAdd';
 
-interface completionProps {
+interface CompletionProps {
   [key: string]: number;
 }
 export const CompositionTable = (props: {
   name: string;
-  completion: completionProps;
+  completion: CompletionProps;
   handleCombine: (unit: string) => void;
 }) => {
   const { name, completion, handleCombine } = props;
 
-  const rows = Object.entries(completion).map(([unit, completeness]) => ({
-    unit: unit,
-    completeness: Math.floor(completeness) + '%',
-    button: (
-      <button style={{ marginLeft: 20 }} onClick={() => handleCombine(unit)}>
-        조합
-      </button>
-    ),
-  }));
   return (
-    <Stack>
+    <Stack alignItems="center">
       <Typography variant="h5">{name}</Typography>
-      <DataGrid
-        columns={[
-          { field: 'unit', headerName: '유닛' },
-          { field: 'completeness', headerName: '완성도' },
-          {
-            field: 'action',
-            headerName: ' ',
-            renderCell: (params: { row: { unit: string } }) => (
-              <Button
-                style={{ marginLeft: 20 }}
-                onClick={() => handleCombine(params.row.unit)}
-                label="조합"></Button>
-            ),
-          },
-        ]}
-        rows={rows}
-        getRowId={(row: { unit: string }) => row.unit}
-        sx={{ width: 350 }}
-      />
+      <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
+        <Stack sx={{ marginLeft: 9 }} direction="row" spacing={2}>
+          <Typography variant="h6">유닛</Typography>
+          <Typography variant="h6">완성도</Typography>
+        </Stack>
+
+        {Object.entries(completion).map(([unit, completeness]) => {
+          const labelId = `checkbox-list-label-${unit}`;
+          const percent = Math.floor(completeness);
+          return (
+            <ListItem key={unit} disablePadding>
+              <ListItemButton dense>
+                <Grid
+                  container
+                  alignItems="center"
+                  justifyContent="space-between"
+                  sx={{ marginLeft: 3 }}>
+                  <Grid item>
+                    <ListItemText
+                      id={labelId}
+                      primary={`${unit}`}
+                      sx={{ marginRight: 3 }}
+                    />
+                  </Grid>
+                  <Grid item>
+                    <Grid
+                      container
+                      alignItems="center"
+                      justifyContent="flex-end">
+                      <Grid item>
+                        <ListItemText id={labelId} primary={`${percent}%`} />
+                      </Grid>
+                      <Grid item>
+                        <ListItemIcon>
+                          <IconButton
+                            edge="end"
+                            aria-label="조합"
+                            onClick={() => handleCombine(unit)}>
+                            <PersonAddIcon />
+                          </IconButton>
+                        </ListItemIcon>
+                      </Grid>
+                    </Grid>
+                  </Grid>
+                </Grid>
+              </ListItemButton>
+            </ListItem>
+          );
+        })}
+      </List>
     </Stack>
   );
 };

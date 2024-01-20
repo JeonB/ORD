@@ -1,15 +1,11 @@
 /* eslint-disable */
 import React, { useState, useEffect } from 'react';
-import { Composition } from 'components/Composition';
 import { unit, useCount } from 'context/UnitCountContext';
-import { Button } from 'ra-ui-materialui';
-import { Typography } from '@mui/material';
-import { Stack } from '@mui/system';
-import { DataGrid, GridCellParams } from '@mui/x-data-grid';
+import { UnitCount } from 'components';
 
 export const Random = () => {
   const { count, setCount } = useCount();
-  const etcCount = {
+  const randomCount = {
     k: count.k,
     나루토선인모드: count.나루토선인모드,
     메구밍: count.메구밍,
@@ -26,65 +22,5 @@ export const Random = () => {
     츠바사: count.츠바사,
   };
 
-  const handleCharacterReset = (character: string) => {
-    setCount(prevCount => ({
-      ...prevCount,
-      [character]: 0,
-    }));
-  };
-
-  const handleCellClick = (params: GridCellParams) => {
-    // 클릭 이벤트 처리
-    const clickedUnit = params.row.unit;
-    if (clickedUnit) {
-      handleUnitClick(clickedUnit);
-    }
-  };
-
-  const handleUnitClick = (character: string) => {
-    setCount(prevCount => {
-      const updatedCount: unit = { ...prevCount };
-      updatedCount[character] = (prevCount[character] || 0) + 1;
-      return updatedCount;
-    });
-  };
-  const rows = Object.entries(etcCount).map(([unit, count]) => ({
-    unit: unit,
-    count: count,
-    button: (
-      <button
-        style={{ marginLeft: 20 }}
-        onClick={() => handleCharacterReset(unit)}>
-        리셋
-      </button>
-    ),
-  }));
-
-  const columns = [
-    { field: 'unit', headerName: '유닛' },
-    { field: 'count', headerName: '개수' },
-    {
-      field: 'action',
-      renderCell: (params: { row: { unit: string } }) => (
-        <Button
-          style={{ marginLeft: 20 }}
-          onClick={() => handleCharacterReset(params.row.unit)}
-          label="리셋"
-        />
-      ),
-    },
-  ];
-
-  return (
-    <Stack>
-      <Typography variant="h5">랜덤 유닛</Typography>
-      <DataGrid
-        columns={columns}
-        rows={rows}
-        getRowId={row => row.unit}
-        sx={{ width: 350, cursor: 'pointer' }}
-        onCellClick={handleCellClick}
-      />
-    </Stack>
-  );
+  return <UnitCount name={'랜덤'} UnitCount={randomCount} />;
 };
