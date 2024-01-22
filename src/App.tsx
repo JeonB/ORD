@@ -2,7 +2,16 @@
 import React from 'react';
 import { UnitCountContextProvider } from 'context/UnitCountContext';
 import { Stack, ThemeProvider, createTheme } from '@mui/material';
-import { Common, Etc, Random, Rare, Special, Uncommon } from 'composition';
+import {
+  Common,
+  Etc,
+  Hidden,
+  Legendary,
+  Random,
+  Rare,
+  Special,
+  Uncommon,
+} from 'composition';
 
 const App: React.FC = () => {
   const theme = createTheme();
@@ -19,6 +28,10 @@ const App: React.FC = () => {
           <Stack>
             <Random />
             <Etc />
+          </Stack>
+          <Stack direction={'row'}>
+            <Legendary />
+            <Hidden />
           </Stack>
         </ThemeProvider>
       </UnitCountContextProvider>
