@@ -6,3 +6,5 @@ export * from './Etc';
 export * from './Random';
 export * from './Legendary';
 export * from './Hidden';
+export * from './Changed';
+export * from './Limited';
