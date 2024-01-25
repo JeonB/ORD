@@ -9,5 +9,5 @@ export * from './Hidden';
 export * from './Changed';
 export * from './Limited';
 export * from './Transcendence';
-export * from './Immotal';
+export * from './Immortal';
 export * from './Eternal';

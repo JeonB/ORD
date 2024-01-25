@@ -1,7 +1,7 @@
 import { Composition } from 'components';
 import React from 'react';
 
-export const Immotal = () => {
+export const Immortal = () => {
   const composition: { [key: string]: { [key: string]: number } } = {
     골D로져: {
       총병: 23,
@@ -140,5 +140,5 @@ export const Immotal = () => {
       좀비: 3,
     },
   };
-  return <Composition composition={composition} name={'희귀함'} />;
+  return <Composition composition={composition} name={'불멸의'} />;
 };
