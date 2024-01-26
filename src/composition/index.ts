@@ -11,3 +11,4 @@ export * from './Limited';
 export * from './Transcendence';
 export * from './Immortal';
 export * from './Eternal';
+export * from './RandomLimited';
