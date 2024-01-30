@@ -13,6 +13,7 @@ export const Composition = (props: {
   );
 
   const calculateCompletion = () => {
+    console.log('호출테스트');
     Object.keys(composition).forEach(unit => {
       const unitConditions = composition[unit];
       const totalConditions = Object.keys(unitConditions).length;
