@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { Composition } from 'components/Composition';
 
+// 안흔함 유닛 로직도 추가해야됨
 export const Special = () => {
   const composition: { [key: string]: { [key: string]: number } } = {
     드레이크: { 칼병: 3, 총병: 1, 쵸파: 1 },

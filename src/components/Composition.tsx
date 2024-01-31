@@ -1,5 +1,5 @@
 import { useCount } from 'context/UnitCountContext';
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import { CompositionTable } from './CompositionTable';
 
 export const Composition = (props: {
@@ -13,7 +13,6 @@ export const Composition = (props: {
   );
 
   const calculateCompletion = () => {
-    console.log('호출테스트');
     Object.keys(composition).forEach(unit => {
       const unitConditions = composition[unit];
       const totalConditions = Object.keys(unitConditions).length;
