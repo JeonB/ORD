@@ -40,14 +40,14 @@ const App: React.FC = () => {
           </Stack>
           <Stack direction={'row'}>
             <Transcendence />
-            <Immortal />
+            <Stack>
+              <Immortal />
+              <RandomLimited />
+            </Stack>
           </Stack>
-          <Stack direction={'row'}>
-            <RandomLimited />
-            <Changed />
-          </Stack>
-          <Stack direction={'row'}>
+          <Stack>
             <Limited />
+            <Changed />
           </Stack>
         </ThemeProvider>
       </UnitCountContextProvider>
