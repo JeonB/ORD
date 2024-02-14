@@ -8,6 +8,7 @@ export const Composition = React.memo(
     name: string;
   }) => {
     const { composition, name } = props;
+    //useCount()에 정의된 count(흔함유닛 개수) 호출
     const { count, setCount } = useCount();
     const [completion, setCompletion] = useState<{ [key: string]: number }>(
       Object.fromEntries(Object.keys(composition).map(unit => [unit, 0])),
@@ -54,6 +55,7 @@ export const Composition = React.memo(
 
       return { ...completion };
     }, [count, composition]);
+
     const [memoizedCompletion, setMemoizedCompletion] = useState<{
       [key: string]: number;
     }>(() => calculateCompletion());
