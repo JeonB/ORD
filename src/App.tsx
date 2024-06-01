@@ -1,7 +1,7 @@
 /* eslint-disable */
-import React from 'react';
-import { UnitCountContextProvider } from 'context/UnitCountContext';
-import { Stack, ThemeProvider, createTheme } from '@mui/material';
+import React from 'react'
+import { UnitCountContextProvider } from 'src/context/UnitCountContext'
+import { Stack, ThemeProvider, createTheme } from '@mui/material'
 import {
   Changed,
   Common,
@@ -16,10 +16,10 @@ import {
   Special,
   Transcendence,
   Uncommon,
-} from 'composition';
+} from '@_compositions'
 
 const App: React.FC = () => {
-  const theme = createTheme();
+  const theme = createTheme()
   return (
     <div className="App">
       <UnitCountContextProvider>
@@ -52,7 +52,7 @@ const App: React.FC = () => {
         </ThemeProvider>
       </UnitCountContextProvider>
     </div>
-  );
-};
+  )
+}
 
-export default App;
+export default App
