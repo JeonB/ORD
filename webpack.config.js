@@ -27,7 +27,7 @@ module.exports = {
     alias: {
       // Add this block to handle module resolution
       '@_compositions': path.resolve(__dirname, 'src/compositions'),
-      '@_components/*': path.resolve(__dirname, 'src/components/*'),
+      '@_components': path.resolve(__dirname, 'src/components'),
       src: path.resolve(__dirname, 'src'),
     },
   },
