@@ -1,6 +1,6 @@
 /* eslint-disable */
-import React, { useState, useEffect } from 'react';
-import { Composition } from 'components/Composition';
+import React, { useState, useEffect } from 'react'
+import { Composition } from '@_components/Composition'
 
 // 안흔함 유닛 로직도 추가해야됨
 export const Special = () => {
@@ -38,7 +38,7 @@ export const Special = () => {
     에이스특별함: { 총병: 2, 루피: 2, 우솝: 1 },
     헤르메포: { 쵸파: 1, 조로: 2, 상디: 1 },
     압살롬: { 좀비: 3, 나미: 1 },
-  };
+  }
 
-  return <Composition composition={composition} name={'특별함'} />;
-};
+  return <Composition composition={composition} name={'특별함'} />
+}

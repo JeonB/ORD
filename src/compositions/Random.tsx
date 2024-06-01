@@ -1,10 +1,10 @@
 /* eslint-disable */
-import React, { useState, useEffect } from 'react';
-import { unit, useCount } from 'context/UnitCountContext';
-import { UnitCount } from 'components';
+import React, { useState, useEffect } from 'react'
+import { unit, useCount } from 'src/context/UnitCountContext'
+import { UnitCount } from '@_components/UnitCount'
 
 export const Random = () => {
-  const { count, setCount } = useCount();
+  const { count, setCount } = useCount()
   const randomCount = {
     k: count.k,
     나루토선인모드: count.나루토선인모드,
@@ -20,7 +20,7 @@ export const Random = () => {
     토우마: count.토우마,
     이치고: count.이치고,
     츠바사: count.츠바사,
-  };
+  }
 
-  return <UnitCount name={'랜덤'} UnitCount={randomCount} />;
-};
+  return <UnitCount name={'랜덤'} UnitCount={randomCount} />
+}

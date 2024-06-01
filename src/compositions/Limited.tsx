@@ -1,6 +1,6 @@
 /* eslint-disable */
-import React, { useState, useEffect } from 'react';
-import { Composition } from 'components/Composition';
+import React, { useState, useEffect } from 'react'
+import { Composition } from '@_components/Composition'
 
 export const Limited = () => {
   const composition: { [key: string]: { [key: string]: number } } = {
@@ -116,7 +116,7 @@ export const Limited = () => {
       칼병: 9,
       버기: 7,
     },
-  };
+  }
 
-  return <Composition composition={composition} name={'제한됨'} />;
-};
+  return <Composition composition={composition} name={'제한됨'} />
+}

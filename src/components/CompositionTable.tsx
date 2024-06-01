@@ -8,19 +8,19 @@ import {
   ListItemText,
   Stack,
   Typography,
-} from '@mui/material';
-import React from 'react';
-import PersonAddIcon from '@mui/icons-material/PersonAdd';
+} from '@mui/material'
+import React from 'react'
+import PersonAddIcon from '@mui/icons-material/PersonAdd'
 
 interface CompletionProps {
-  [key: string]: number;
+  [key: string]: number
 }
 export const CompositionTable = (props: {
-  name: string;
-  completion: CompletionProps;
-  handleCombine: (unit: string) => void;
+  name: string
+  completion: CompletionProps
+  handleCombine: (unit: string) => void
 }) => {
-  const { name, completion, handleCombine } = props;
+  const { name, completion, handleCombine } = props
 
   return (
     <Stack alignItems="center">
@@ -32,8 +32,8 @@ export const CompositionTable = (props: {
         </Stack>
 
         {Object.entries(completion).map(([unit, completeness]) => {
-          const labelId = `checkbox-list-label-${unit}`;
-          const percent = Math.floor(completeness);
+          const labelId = `checkbox-list-label-${unit}`
+          const percent = Math.floor(completeness)
           return (
             <ListItem key={unit} disablePadding>
               <ListItemButton dense>
@@ -72,9 +72,9 @@ export const CompositionTable = (props: {
                 </Grid>
               </ListItemButton>
             </ListItem>
-          );
+          )
         })}
       </List>
     </Stack>
-  );
-};
+  )
+}

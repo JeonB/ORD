@@ -1,6 +1,6 @@
 /* eslint-disable */
-import React, { useState, useEffect } from 'react';
-import { Composition } from 'components/Composition';
+import React, { useState, useEffect } from 'react'
+import { Composition } from '@_components/Composition'
 
 export const Uncommon = () => {
   const composition: { [key: string]: { [key: string]: number } } = {
@@ -17,7 +17,7 @@ export const Uncommon = () => {
     에이스: { 루피: 1, 총병: 1 },
     프랑키: { 루피: 1, 우솝: 1 },
     하찌: { 나미: 1, 총병: 1 },
-  };
+  }
 
-  return <Composition composition={composition} name={'안흔함'} />;
-};
+  return <Composition composition={composition} name={'안흔함'} />
+}

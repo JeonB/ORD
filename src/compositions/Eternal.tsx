@@ -1,5 +1,5 @@
-import { Composition } from 'components';
-import React from 'react';
+import { Composition } from '@_components/Composition'
+import React from 'react'
 
 export const Eternal = () => {
   const composition: { [key: string]: { [key: string]: number } } = {
@@ -86,6 +86,6 @@ export const Eternal = () => {
       버기마기탄: 1,
       목재: 5,
     },
-  };
-  return <Composition composition={composition} name={'영원한'} />;
-};
+  }
+  return <Composition composition={composition} name={'영원한'} />
+}

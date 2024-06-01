@@ -1,5 +1,5 @@
-import { Composition } from 'components';
-import React from 'react';
+import { Composition } from '@_components/Composition'
+import React from 'react'
 
 export const Legendary = () => {
   const composition: { [key: string]: { [key: string]: number } } = {
@@ -442,6 +442,6 @@ export const Legendary = () => {
       쵸파: 3,
       목재: 3,
     },
-  };
-  return <Composition composition={composition} name={'전설적인'} />;
-};
+  }
+  return <Composition composition={composition} name={'전설적인'} />
+}

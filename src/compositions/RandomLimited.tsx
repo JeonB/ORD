@@ -1,5 +1,5 @@
-import { Composition } from 'components';
-import React from 'react';
+import { Composition } from '@_components/Composition'
+import React from 'react'
 
 export const RandomLimited = () => {
   const composition: { [key: string]: { [key: string]: number } } = {
@@ -65,6 +65,6 @@ export const RandomLimited = () => {
       행운의토큰: 1,
       목재: 7,
     },
-  };
-  return <Composition composition={composition} name={'랜덤제한됨'} />;
-};
+  }
+  return <Composition composition={composition} name={'랜덤제한됨'} />
+}

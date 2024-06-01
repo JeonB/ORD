@@ -1,5 +1,5 @@
-import { Composition } from 'components';
-import React from 'react';
+import { Composition } from '@_components/Composition'
+import React from 'react'
 
 export const Immortal = () => {
   const composition: { [key: string]: { [key: string]: number } } = {
@@ -139,6 +139,6 @@ export const Immortal = () => {
       칼병: 11,
       좀비: 3,
     },
-  };
-  return <Composition composition={composition} name={'불멸의'} />;
-};
+  }
+  return <Composition composition={composition} name={'불멸의'} />
+}

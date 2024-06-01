@@ -8,36 +8,34 @@ import {
   ListItemText,
   Stack,
   Typography,
-} from '@mui/material';
-import { useCount } from 'context/UnitCountContext';
-import React, { useEffect } from 'react';
-import { unit } from 'context/UnitCountContext';
-import RestartAltIcon from '@mui/icons-material/RestartAlt';
-
+} from '@mui/material'
+import { useCount, unit } from 'src/context/UnitCountContext'
+import RestartAltIcon from '@mui/icons-material/RestartAlt'
+import React, { useState, useEffect } from 'react'
 interface completionProps {
-  [key: string]: number;
+  [key: string]: number
 }
 export const UnitCount = (props: {
-  name: string;
-  UnitCount: completionProps;
+  name: string
+  UnitCount: completionProps
 }) => {
-  const { count, setCount } = useCount();
-  const { UnitCount, name } = props;
+  const { count, setCount } = useCount()
+  const { UnitCount, name } = props
 
   const handleUnitClick = (character: string) => {
     setCount(prevCount => {
-      const updatedCount: unit = { ...prevCount };
-      updatedCount[character] = (prevCount[character] || 0) + 1;
-      return updatedCount;
-    });
-  };
+      const updatedCount: unit = { ...prevCount }
+      updatedCount[character] = (prevCount[character] || 0) + 1
+      return updatedCount
+    })
+  }
 
   const handleCharacterReset = (character: string) => {
     setCount(prevCount => ({
       ...prevCount,
       [character]: 0,
-    }));
-  };
+    }))
+  }
 
   return (
     <Stack alignItems={'center'}>
@@ -50,7 +48,7 @@ export const UnitCount = (props: {
         </Stack>
 
         {Object.entries(UnitCount).map(([unit, count]) => {
-          const labelId = `checkbox-list-label-${unit}`;
+          const labelId = `checkbox-list-label-${unit}`
 
           return (
             <ListItem
@@ -74,9 +72,9 @@ export const UnitCount = (props: {
                 <ListItemText id={labelId} primary={`${count}`} />
               </ListItemButton>
             </ListItem>
-          );
+          )
         })}
       </List>
     </Stack>
-  );
-};
+  )
+}

@@ -1,34 +1,22 @@
 /* eslint-disable */
-import {
-  IconButton,
-  List,
-  ListItem,
-  ListItemButton,
-  ListItemIcon,
-  ListItemText,
-  Stack,
-  Typography,
-} from '@mui/material';
-import { useCount } from 'context/UnitCountContext';
-import React, { useEffect } from 'react';
-import { unit } from 'context/UnitCountContext';
-import RestartAltIcon from '@mui/icons-material/RestartAlt';
-import { UnitCount } from 'components/UnitCount';
+import { useCount, unit } from 'src/context/UnitCountContext'
+import React, { useEffect } from 'react'
+import { UnitCount } from '@_components/UnitCount'
 interface CharacterKeys {
-  q: string;
-  w: string;
-  e: string;
-  r: string;
-  a: string;
-  s: string;
-  d: string;
-  f: string;
-  g: string;
-  [key: string]: string;
+  q: string
+  w: string
+  e: string
+  r: string
+  a: string
+  s: string
+  d: string
+  f: string
+  g: string
+  [key: string]: string
 }
 
 export const Common = () => {
-  const { count, setCount } = useCount();
+  const { count, setCount } = useCount()
   const commonCount = {
     루피: count.루피,
     조로: count.조로,
@@ -39,7 +27,7 @@ export const Common = () => {
     버기: count.버기,
     총병: count.총병,
     칼병: count.칼병,
-  };
+  }
   const characterKeys: CharacterKeys = {
     q: '루피',
     w: '조로',
@@ -50,26 +38,26 @@ export const Common = () => {
     d: '버기',
     f: '총병',
     g: '칼병',
-  };
+  }
 
   const handleKeyPress = (event: KeyboardEvent) => {
-    const key = event.key.toLowerCase();
+    const key = event.key.toLowerCase()
     if (characterKeys[key]) {
       setCount(prevCount => {
-        const updatedCount: unit = { ...prevCount };
+        const updatedCount: unit = { ...prevCount }
         updatedCount[characterKeys[key]] =
-          (prevCount[characterKeys[key]] || 0) + 1;
-        return updatedCount;
-      });
+          (prevCount[characterKeys[key]] || 0) + 1
+        return updatedCount
+      })
     }
-  };
+  }
 
   useEffect(() => {
-    window.addEventListener('keydown', handleKeyPress);
+    window.addEventListener('keydown', handleKeyPress)
     return () => {
-      window.removeEventListener('keydown', handleKeyPress);
-    };
-  }, [commonCount]);
+      window.removeEventListener('keydown', handleKeyPress)
+    }
+  }, [commonCount])
 
   // const resetCharacter = (unit: string) => {
   //   const matchResult = unit.match(/[가-힣]+/);
@@ -89,5 +77,5 @@ export const Common = () => {
   //   return entry ? entry[0] : undefined;
   // };
 
-  return <UnitCount name={'흔함'} UnitCount={commonCount} />;
-};
+  return <UnitCount name={'흔함'} UnitCount={commonCount} />
+}

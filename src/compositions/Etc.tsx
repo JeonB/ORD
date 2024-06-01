@@ -1,10 +1,10 @@
 /* eslint-disable */
-import React, { useState, useEffect } from 'react';
-import { unit, useCount } from 'context/UnitCountContext';
-import { UnitCount } from 'components';
+import React, { useState, useEffect } from 'react'
+import { unit, useCount } from 'src/context/UnitCountContext'
+import { UnitCount } from '@_components/UnitCount'
 
 export const Etc = () => {
-  const { count, setCount } = useCount();
+  const { count, setCount } = useCount()
   const etcCount = {
     초월쿠마: count.초월쿠마,
     해적선: count.해적선,
@@ -15,7 +15,7 @@ export const Etc = () => {
     목재: count.목재,
     랜덤전용유닛: count.랜덤전용유닛,
     행운의토큰: count.행운의토큰,
-  };
+  }
 
-  return <UnitCount name={'기타'} UnitCount={etcCount} />;
-};
+  return <UnitCount name={'기타'} UnitCount={etcCount} />
+}

@@ -1,5 +1,5 @@
-import { Composition } from 'components';
-import React from 'react';
+import { Composition } from '@_components/Composition'
+import React from 'react'
 
 export const Rare = () => {
   const composition: { [key: string]: { [key: string]: number } } = {
@@ -156,6 +156,6 @@ export const Rare = () => {
       쵸파: 2,
       버기: 2,
     },
-  };
-  return <Composition composition={composition} name={'희귀함'} />;
-};
+  }
+  return <Composition composition={composition} name={'희귀함'} />
+}
