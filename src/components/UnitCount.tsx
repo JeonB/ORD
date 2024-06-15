@@ -12,6 +12,7 @@ import {
 import { useCount, unit } from 'src/context/UnitCountContext'
 import RestartAltIcon from '@mui/icons-material/RestartAlt'
 import React, { useState, useEffect } from 'react'
+import { useStore } from 'src/utils/zustandStore'
 interface completionProps {
   [key: string]: number
 }
@@ -19,22 +20,15 @@ export const UnitCount = (props: {
   name: string
   UnitCount: completionProps
 }) => {
-  const { count, setCount } = useCount()
+  const { setUnitCount } = useStore()
   const { UnitCount, name } = props
 
   const handleUnitClick = (character: string) => {
-    setCount(prevCount => {
-      const updatedCount: unit = { ...prevCount }
-      updatedCount[character] = (prevCount[character] || 0) + 1
-      return updatedCount
-    })
+    setUnitCount(character, (UnitCount[character] || 0) + 1)
   }
 
   const handleCharacterReset = (character: string) => {
-    setCount(prevCount => ({
-      ...prevCount,
-      [character]: 0,
-    }))
+    setUnitCount(character, 0)
   }
 
   return (
