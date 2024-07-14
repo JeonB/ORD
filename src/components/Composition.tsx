@@ -1,6 +1,7 @@
 import { useCount } from 'src/context/UnitCountContext'
 import React, { useState, useEffect, useCallback } from 'react'
 import { CompositionTable } from './CompositionTable'
+import { useStore } from 'src/utils/zustandStore'
 
 export const Composition = React.memo(
   (props: {
@@ -9,7 +10,9 @@ export const Composition = React.memo(
   }) => {
     const { composition, name } = props
     //useCount()에 정의된 count(흔함유닛 개수) 호출
-    const { count, setCount } = useCount()
+    // const { count, setCount } = useCount()
+    const count = useStore(state => state.unitCount)
+    const setCount = useStore(state => state.setUnitCount)
     const [completion, setCompletion] = useState<{ [key: string]: number }>(
       Object.fromEntries(Object.keys(composition).map(unit => [unit, 0])),
     )
@@ -65,21 +68,19 @@ export const Composition = React.memo(
     }, [count])
 
     const handleCombine = (unit: string) => {
-      setCount(prevCount => {
-        const newCount = { ...prevCount }
-        const unitCondition = composition[unit]
+      const unitCondition = composition[unit]
 
-        if (memoizedCompletion[unit] >= 100) {
-          const newCompletion = { ...completion }
-          newCompletion[unit] -= 100
-          setCompletion({ ...newCompletion }) // 리렌더링함으로써 UI업데이트
-          Object.keys(unitCondition).forEach(condition => {
-            newCount[condition] -= unitCondition[condition]
-          })
-        }
+      if (memoizedCompletion[unit] >= 100) {
+        const newCompletion = { ...completion }
+        newCompletion[unit] -= 100
+        setCompletion(newCompletion) // 리렌더링함으로써 UI업데이트
 
-        return newCount
-      })
+        Object.keys(unitCondition).forEach(condition => {
+          const currentCount = count[condition]
+          const decrement = unitCondition[condition]
+          setCount(condition, currentCount - decrement)
+        })
+      }
     }
     return (
       <CompositionTable
