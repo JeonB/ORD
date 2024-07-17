@@ -28,7 +28,7 @@ const App: React.FC = () => {
             <Common />
             <Uncommon />
           </Stack>
-          <Special />
+          {/* <Special />
           <Rare />
           <Stack>
             <Random />
@@ -48,7 +48,7 @@ const App: React.FC = () => {
           <Stack>
             <Limited />
             <Changed />
-          </Stack>
+          </Stack> */}
         </ThemeProvider>
       </UnitCountContextProvider>
     </div>
