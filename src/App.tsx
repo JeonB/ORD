@@ -1,15 +1,10 @@
 /* eslint-disable */
-import React from 'react'
-import { UnitCountContextProvider } from 'src/context/UnitCountContext'
-import { Stack, ThemeProvider, createTheme } from '@mui/material'
 import {
-  Changed,
   Common,
   Etc,
   Hidden,
   Immortal,
   Legendary,
-  Limited,
   Random,
   RandomLimited,
   Rare,
@@ -17,6 +12,9 @@ import {
   Transcendence,
   Uncommon,
 } from '@_compositions'
+import { Stack, ThemeProvider, createTheme } from '@mui/material'
+import React from 'react'
+import { UnitCountContextProvider } from 'src/context/UnitCountContext'
 
 const App: React.FC = () => {
   const theme = createTheme()
@@ -28,7 +26,7 @@ const App: React.FC = () => {
             <Common />
             <Uncommon />
           </Stack>
-          {/* <Special />
+          <Special />
           <Rare />
           <Stack>
             <Random />
@@ -45,7 +43,7 @@ const App: React.FC = () => {
               <RandomLimited />
             </Stack>
           </Stack>
-          <Stack>
+          {/* <Stack>
             <Limited />
             <Changed />
           </Stack> */}
