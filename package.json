@@ -14,7 +14,7 @@
     "@testing-library/react": "^15.0.5",
     "@testing-library/user-event": "^14.5.2",
     "@types/jest": "^29.5.12",
-    "@types/node": "^20.10.4",
+    "@types/node": "^22.4.1",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
     "million": "^3.1.7",
@@ -55,7 +55,7 @@
   "devDependencies": {
     "@babel/preset-typescript": "^7.24.6",
     "@craco/craco": "^7.1.0",
-    "@types/node": "^20.10.4",
+    "@types/node": "^22.4.1",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
     "eslint": "^8.55.0",
