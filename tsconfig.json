@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "es6",
+    "target": "esnext",
     "lib": ["dom", "dom.iterable", "esnext"],
     "baseUrl": ".",
     "allowJs": true,
@@ -10,18 +10,16 @@
     "strict": true,
     "forceConsistentCasingInFileNames": true,
     "noFallthroughCasesInSwitch": true,
-    "module": "esnext",
+    "module": "CommonJS",
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react-jsx",
-    "paths": {
-      "*": ["*"],
-      "@_tests/*": ["src/tests/*"],
-      "@_components/*": ["src/components/*"],
-      "@_compositions": ["src/compositions"],
-      "@_types/*": ["src/types/*"]
-    }
-  }
+    "jsx": "preserve",
+    "paths": { "*": ["*"] },
+    "incremental": true,
+    "plugins": [{ "name": "next" }]
+  },
+  "include": ["next-env.d.ts", ".next/types/**/*.ts", "**/*.ts", "**/*.tsx"],
+  "exclude": ["node_modules"]
 }

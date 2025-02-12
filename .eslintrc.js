@@ -1,31 +1,22 @@
 module.exports = {
-  env: {
-    browser: true,
-    es2021: true,
-  },
+  env: { browser: true, es2021: true },
   extends: [
     'eslint:recommended',
     'plugin:@typescript-eslint/recommended',
     'plugin:prettier/recommended',
     'plugin:react/recommended',
     'prettier',
+    'plugin:@next/next/recommended',
   ],
   overrides: [
     {
-      env: {
-        node: true,
-      },
+      env: { node: true },
       files: ['**/*.js'],
-      parserOptions: {
-        sourceType: 'script',
-      },
+      parserOptions: { sourceType: 'script' },
     },
   ],
   parser: '@typescript-eslint/parser',
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-  },
+  parserOptions: { ecmaVersion: 'latest', sourceType: 'module' },
   plugins: ['@typescript-eslint', 'react'],
   settings: {
     react: {
@@ -33,12 +24,7 @@ module.exports = {
     },
   },
   rules: {
-    'prettier/prettier': [
-      'error',
-      {
-        endOfLine: 'auto',
-      },
-    ],
+    'prettier/prettier': ['error', { endOfLine: 'auto' }],
     '@typescript-eslint/consistent-type-assertions': 'off',
     '@typescript-eslint/no-floating-promises': 'off',
     '@typescript-eslint/strict-boolean-expressions': 'off',
@@ -48,5 +34,6 @@ module.exports = {
     '@typescript-eslint/no-explicit-any': 'off',
     '@typescript-eslint/no-unsafe-argument': 'off',
     '@typescript-eslint/no-var-requires': 'off',
+    'react/react-in-jsx-scope': 'off',
   },
 }
